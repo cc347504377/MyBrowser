@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragment_item_head_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.luoye.demo.mybrowser.news.view.Pointview
+        android:id="@+id/point1"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize"
+        android:background="@drawable/point"
+        android:layout_alignTop="@+id/point3"
+        android:layout_toLeftOf="@+id/point2"
+        android:layout_marginRight="5dp"
+        />
+
+    <com.luoye.demo.mybrowser.news.view.Pointview
+        android:id="@+id/point2"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize"
+        android:background="@drawable/point"
+        android:layout_alignTop="@+id/point3"
+        android:layout_toLeftOf="@+id/point3"
+        android:layout_marginRight="5dp"
+        />
+
+    <com.luoye.demo.mybrowser.news.view.Pointview
+        android:id="@+id/point3"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize"
+        android:background="@drawable/point"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="25dp"/>
+</RelativeLayout>

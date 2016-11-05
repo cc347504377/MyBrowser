@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/news_background">
+    <ImageView
+        android:layout_margin="6dp"
+        android:id="@+id/fragment_item_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textColor="@color/black"
+        android:layout_margin="5dp"
+        android:id="@+id/fragment_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/fragment_item_img"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:text="title"/>
+    <TextView
+        android:layout_marginRight="5dp"
+        android:id="@+id/fragment_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/fragment_item_img"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="2dp"
+        android:textSize="11sp"
+        android:text="time"/>
+    <TextView
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/fragment_item_Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/fragment_item_img"
+        android:layout_toEndOf="@id/fragment_item_img"
+        android:layout_marginBottom="3dp"
+        android:text="descrption" />
+
+</RelativeLayout>

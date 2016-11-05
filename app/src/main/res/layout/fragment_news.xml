@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fragment_swiperefreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include
+            layout="@layout/adapter_item_news_loading"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/fragment_progressbar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+    <ImageView
+        android:id="@+id/fragment_imgview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/load"
+        android:visibility="gone"
+        android:focusable="false"/>
+
+</RelativeLayout>

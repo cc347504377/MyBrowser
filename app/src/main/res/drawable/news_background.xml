@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:state_pressed="true">
+                <shape>
+                    <solid android:color="@color/clickcolor" />
+                    <stroke android:color="@color/gray" android:width="0.4dp" />
+                </shape>
+            </item>
+            <item>
+                <shape>
+                    <solid android:color="@color/white" />
+                    <stroke android:color="@color/gray" android:width="0.4dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</layer-list>
+
