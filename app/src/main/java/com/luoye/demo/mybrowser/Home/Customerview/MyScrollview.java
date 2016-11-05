@@ -1,21 +1,30 @@
 package com.luoye.demo.mybrowser.Home.Customerview;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Scroller;
+import android.widget.Toast;
+
+import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 
 /**
  * Created by Luoye on 2016/11/4.
  */
 
-public class MyScrollview extends ScrollView  {
+public class MyScrollview extends FrameLayout {
 
     private int heightPixels;
     private boolean isfirst = true;
@@ -25,6 +34,9 @@ public class MyScrollview extends ScrollView  {
     private Intent intent;
     private final String RECEIVERACTION = "scroll";
     private LinearLayout otherview;
+    private View content;
+
+
 
     public MyScrollview(Context context) {
         this(context,null);
@@ -36,25 +48,40 @@ public class MyScrollview extends ScrollView  {
 
     public MyScrollview(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //注册广播
+        context.registerReceiver(new Canscroll(), new IntentFilter("can"));
+
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
         heightPixels = metrics.heightPixels;
         this.context = context;
         intent = new Intent(RECEIVERACTION);
+        mScroller = new Scroller(getContext());
+        mtoughstop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (isfirst) {
-            ViewGroup layout = (ViewGroup) getChildAt(0);
-            layout.getChildAt(1).getLayoutParams().height = heightPixels-getStatusBarHeight();
+            getChildAt(1).getLayoutParams().height = heightPixels-getStatusBarHeight();
+            otherview = (LinearLayout) getChildAt(0);
 
-            otherview = (LinearLayout) layout.getChildAt(0);
+
             otherviewheight = otherview.getMeasuredHeight();
             isfirst = false;
+            content = getChildAt(1);
+            content.scrollTo(0, -otherviewheight);
+
+            start = -otherviewheight;
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
     }
 
     public int getStatusBarHeight() {
@@ -67,43 +94,112 @@ public class MyScrollview extends ScrollView  {
     }
 
     private float lasty;
+    private int offsety;
+    private int start ;
+    private int mtoughstop;
+    private double myfristtough;
+
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lasty = ev.getY();
+                if (!mScroller.isFinished()) {
+                    mScroller.forceFinished(true);
+                }
+                myfristtough = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (canscroll) {
-                    otherview.setTranslationY(-(lasty-ev.getY()));
-                    Log.i("TAG", ev.getY()-lasty + "");
-                    lasty = ev.getY();
+                if (Math.abs(myfristtough - ev.getY()) > mtoughstop) {
+                    if (canscroll){
+                        Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                    else return false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 break;
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                offsety =  (int) (lasty - event.getY());
+                content.scrollTo(0, offsety + start);
+//                Log.i("TAG", "start: " + start);
+//                Log.i("TAG", "offsety:" + offsety);
+                if (offsety > otherviewheight) {
+                    content.scrollTo(0, 0);
+                }
+                if (offsety < 0) {
+                    content.scrollTo(0, -otherviewheight);
+                }
+//                lasty = event.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+//                Log.i("TAG", "___________________________");
+                if (offsety < otherviewheight / 2) {
+                    content.scrollTo(0, -otherviewheight);
+                    smoothScrollTo(0,-otherviewheight);
+                    start = -otherviewheight;
+                }else{
+                    content.scrollTo(0, 0);
+                    smoothScrollTo(0, 0);
+                    start = 0;
+                    canscroll = false;
+                }
+                break;
 
         }
+        return true;
+    }
 
-
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
-
-
-            if (getScrollY()>otherviewheight/2){//向上滑动
-                smoothScrollTo(0,otherviewheight);
-
-
-//                context.sendBroadcast(intent);
-                canscroll = false;
+    private Scroller mScroller;
+    private void smoothScrollTo(int scrollX,int scrollY){
+        int startX = content.getScrollX();
+        int startY = content.getScrollY();
+        int dx = scrollX - startX;
+        int dy = scrollY - startY;
+        mScroller.startScroll(startX, startY, dx, dy, 1000);
+        invalidate();//为了触发computeScroll方法
+    }
+    /**
+     * Scroller
+     * 起点：startX
+     * 滚动多少：dx
+     * 时间：duration
+     *
+     * currX: 随着时间在发生变化
+     */
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if(!mScroller.isFinished()){
+            if(mScroller.computeScrollOffset()){
+                int homeScrollX = mScroller.getCurrX();
+                content.scrollTo(homeScrollX, mScroller.getCurrY());
+//                otherview.scrollTo((int) ((homeScrollX+mMenuWidth)*(mMenuWidth*mMenuScrollRaio)/mMenuWidth), 0);
+                invalidate();
             }
-            return true;
         }
-        if (canscroll) {
-            return super.onTouchEvent(ev);
-        }else {
-            return true;
+    }
+
+    class Canscroll extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            canscroll = true;
+            content.scrollTo(0, -otherviewheight);
+            smoothScrollTo(0,-otherviewheight);
+            start = -otherviewheight;
         }
-
-
     }
 }

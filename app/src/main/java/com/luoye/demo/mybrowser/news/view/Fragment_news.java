@@ -76,14 +76,11 @@ public class Fragment_news extends Fragment {
             }
         }
     };
-    private Scollchange scollchange;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         volleyHttp = VolleyHttp.getinstance();
-        scollchange = new Scollchange();
-        getActivity().registerReceiver(scollchange, new IntentFilter(RECEIVERACTION));
         return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
@@ -101,19 +98,8 @@ public class Fragment_news extends Fragment {
         initfreshlayout();
         initloadlistener();
         initrecycleview();
-        onscrollchange();
     }
 
-    public void onscrollchange() {
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!canscroll) {
-                    return true;
-                } else return false;
-            }
-        });
-    }
 
     private void initloadlistener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -267,16 +253,6 @@ public class Fragment_news extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Myapplication.requestQueue.cancelAll(urltag);
-        getActivity().unregisterReceiver(scollchange);
     }
 
-    public class Scollchange extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-                canscroll = !canscroll;
-            Log.i("TAG", canscroll + "aaa");
-        }
-    }
 }

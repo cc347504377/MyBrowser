@@ -4,10 +4,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
@@ -19,13 +15,11 @@
 
             <include layout="@layout/navigationba_includer" />
         </LinearLayout>
+            <fragment
+                android:id="@+id/module_news"
+                android:name="com.luoye.demo.mybrowser.news.view.Fragment_home"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"/>
 
-        <fragment
-            android:id="@+id/module_news"
-            android:name="com.luoye.demo.mybrowser.news.view.Fragment_home"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"/>
-
-    </LinearLayout>
 
 </com.luoye.demo.mybrowser.Home.Customerview.MyScrollview>
