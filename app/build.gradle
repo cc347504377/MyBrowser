@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -30,4 +31,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:cardview-v7:24.2.1'
+    // ButterKnife
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.jakewharton:butterknife:8.2.1'
 }

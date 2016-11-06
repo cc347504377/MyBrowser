@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="10dp">
+    android:layout_height="50dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+        <EditText
+            android:textSize="14sp"
+            android:hint="输入关键字或网址进行搜索"
+            android:maxLines="1"
+            android:drawableLeft="@drawable/find_selected"
+            android:drawableRight="@drawable/tool_share"
+            android:background="@drawable/fffffff"
+            android:id="@+id/edit_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/edit_query"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</android.support.v7.widget.CardView>
+</LinearLayout>

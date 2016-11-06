@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class MyScrollview extends FrameLayout {
     private final String RECEIVERACTION = "scroll";
     private LinearLayout otherview;
     private View content;
-
+    private int contentheight;
 
 
     public MyScrollview(Context context) {
@@ -66,6 +67,7 @@ public class MyScrollview extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (isfirst) {
             getChildAt(1).getLayoutParams().height = heightPixels-getStatusBarHeight();
+            contentheight = getChildAt(1).getLayoutParams().height;
             otherview = (LinearLayout) getChildAt(0);
 
 
@@ -112,7 +114,6 @@ public class MyScrollview extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(myfristtough - ev.getY()) > mtoughstop) {
                     if (canscroll){
-                        Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     else return false;
@@ -134,12 +135,14 @@ public class MyScrollview extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 offsety =  (int) (lasty - event.getY());
                 content.scrollTo(0, offsety + start);
-//                Log.i("TAG", "start: " + start);
-//                Log.i("TAG", "offsety:" + offsety);
+                otherview.scrollTo(0,offsety/(contentheight/otherviewheight));
+                Log.i("TAG", "start: " + start);
+                Log.i("TAG", "offsety:" + offsety);
                 if (offsety > otherviewheight) {
                     content.scrollTo(0, 0);
                 }
                 if (offsety < 0) {
+                    otherview.scrollTo(0, 0);
                     content.scrollTo(0, -otherviewheight);
                 }
 //                lasty = event.getY();
@@ -147,11 +150,11 @@ public class MyScrollview extends FrameLayout {
             case MotionEvent.ACTION_UP:
 //                Log.i("TAG", "___________________________");
                 if (offsety < otherviewheight / 2) {
-                    content.scrollTo(0, -otherviewheight);
+//                    content.scrollTo(0, -otherviewheight);
                     smoothScrollTo(0,-otherviewheight);
                     start = -otherviewheight;
                 }else{
-                    content.scrollTo(0, 0);
+//                    content.scrollTo(0, 0);
                     smoothScrollTo(0, 0);
                     start = 0;
                     canscroll = false;
@@ -184,9 +187,14 @@ public class MyScrollview extends FrameLayout {
         super.computeScroll();
         if(!mScroller.isFinished()){
             if(mScroller.computeScrollOffset()){
-                int homeScrollX = mScroller.getCurrX();
-                content.scrollTo(homeScrollX, mScroller.getCurrY());
-//                otherview.scrollTo((int) ((homeScrollX+mMenuWidth)*(mMenuWidth*mMenuScrollRaio)/mMenuWidth), 0);
+                content.scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+//                Log.i("TAG", (mScroller.getCurrY()-start) / (contentheight / otherviewheight) + "curry");
+
+                if (start == 0) {
+                    otherview.scrollTo(0, (otherviewheight+mScroller.getCurrY())/ (contentheight / otherviewheight));
+                    Log.i("TAG", (otherviewheight+mScroller.getCurrY())/ (contentheight / otherviewheight)+"-------");
+                }else
+                otherview.scrollTo(0, (mScroller.getCurrY() - start)/ (contentheight / otherviewheight));
                 invalidate();
             }
         }
@@ -197,7 +205,6 @@ public class MyScrollview extends FrameLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             canscroll = true;
-            content.scrollTo(0, -otherviewheight);
             smoothScrollTo(0,-otherviewheight);
             start = -otherviewheight;
         }

@@ -56,8 +56,6 @@ public class Fragment_news extends Fragment {
     private static int page = 1;
     private int FLAG_ADD = 0;
     private String urltag;
-    public boolean canscroll = false;
-    private final String RECEIVERACTION = "scroll";
 
     private Handler handle = new Handler() {
         @Override

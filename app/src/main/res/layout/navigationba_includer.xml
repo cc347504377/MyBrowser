@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="10dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp">
     <TextView
+        android:textColor="#111111"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="百度"/>
     <TextView
+        android:textColor="#111111"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="淘宝"/>
     <TextView
+        android:textColor="#111111"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -31,14 +33,16 @@
         android:layout_height="wrap_content"
         android:text="中关村"/>
     <TextView
+        android:textColor="#111111"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
         android:drawableTop="@drawable/widget_assistant_wannianli"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="天气"/>
+        android:text="美女"/>
     <TextView
+        android:textColor="#111111"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
