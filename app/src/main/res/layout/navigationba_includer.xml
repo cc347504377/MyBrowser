@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
     <TextView
-        android:textColor="#111111"
+        android:textSize="12sp"
+        android:id="@+id/baidu"
+        android:textColor="@color/white"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -15,7 +17,9 @@
         android:layout_height="wrap_content"
         android:text="百度"/>
     <TextView
-        android:textColor="#111111"
+        android:textSize="12sp"
+        android:id="@+id/taobao"
+        android:textColor="@color/white"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -24,7 +28,9 @@
         android:layout_height="wrap_content"
         android:text="淘宝"/>
     <TextView
-        android:textColor="#111111"
+        android:textSize="12sp"
+        android:id="@+id/zhongguanchun"
+        android:textColor="@color/white"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -33,7 +39,9 @@
         android:layout_height="wrap_content"
         android:text="中关村"/>
     <TextView
-        android:textColor="#111111"
+        android:textSize="12sp"
+        android:id="@+id/meinv"
+        android:textColor="@color/white"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"
@@ -42,7 +50,9 @@
         android:layout_height="wrap_content"
         android:text="美女"/>
     <TextView
-        android:textColor="#111111"
+        android:id="@+id/xingzuo"
+        android:textSize="12sp"
+        android:textColor="@color/white"
         android:drawablePadding="5dp"
         android:gravity="center"
         android:layout_weight="1"

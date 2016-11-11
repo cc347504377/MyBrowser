@@ -142,7 +142,7 @@ public class VolleyHttp {
                 public void onResponse(Bitmap bitmap) {
                     bitmap = UtilPublic.getheadbitmapbysize(bitmap, context,4);
                     Drawable db = new BitmapDrawable(bitmap);
-                    imageView.setBackground(db);
+                    imageView.setImageDrawable(db);
                     Bitmapcache.getheadBitmapcache().addBitmapcache(imgurl, bitmap);
                 }
             }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
@@ -159,7 +159,7 @@ public class VolleyHttp {
             queue.add(imageRequest);
         } else {
             Drawable db = new BitmapDrawable(bitmap);
-            imageView.setBackground(db);
+            imageView.setImageDrawable(db);
         }
 
     }

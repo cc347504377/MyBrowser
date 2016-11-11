@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="pointsize">8dp</dimen>
     <dimen name="toolbar">40dp</dimen>
+    <dimen name="pointsizeb">5dp</dimen>
+    <dimen name="pointmargin">20dp</dimen>
 </resources>

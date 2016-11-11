@@ -11,5 +11,9 @@
     <color name="black">#111111</color>
     <color name="clickcolor">#663986f9</color>
     <color name="tabback">#fffbf0</color>
+    <color name="textcolor">#ffffff</color>
+    <color name="textbkcolor">#85ffffff</color>
+    <color name="homeblue">#38a1f2</color>
+    <color name="shenblue">#0994ff</color>
 
 </resources>

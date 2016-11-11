@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:paddingTop="1dp">
     <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/fragment_item_head_layout_imag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

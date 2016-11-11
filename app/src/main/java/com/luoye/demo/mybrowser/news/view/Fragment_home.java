@@ -20,6 +20,10 @@ import com.luoye.demo.mybrowser.news.UtilClass.UtilSharep;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 /**
  * Created by Luoye on 2016/9/1.
  */
@@ -30,9 +34,12 @@ public class Fragment_home extends Fragment {
     private FragmentStatePagerAdapter adapter;
     private ImageButton add;
     private List<String> titledatas;
+    private Unbinder bind;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_one,container,false);
+        View view = inflater.inflate(R.layout.fragment_one, container, false);
+        bind = ButterKnife.bind(this, view);
+        return view;
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -46,11 +53,11 @@ public class Fragment_home extends Fragment {
     private void initdatas() {
         titledatas = Myapplication.sp.getTablist(UtilSharep.TYPE_USE);
         datas = new ArrayList<>();
-        for (int i = 0;i<titledatas.size();i++) {
+        for (int i = 0; i < titledatas.size(); i++) {
             Fragment_news fragment_news = new Fragment_news();
 //            fragment_news.settab(titledatas.get(i));
             Bundle bundle = new Bundle();
-            bundle.putString("name",titledatas.get(i));
+            bundle.putString("name", titledatas.get(i));
             fragment_news.setArguments(bundle);
             datas.add(fragment_news);
         }
@@ -64,10 +71,15 @@ public class Fragment_home extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UtilLog.setlog(requestCode+" request "+resultCode+" result ");
+        UtilLog.setlog(requestCode + " request " + resultCode + " result ");
         if (requestCode == 666 && resultCode == 1) {
             initdatas();
         }
+    }
+
+    @OnClick(R.id.home_new_add)
+    public void onClick() {
+        startActivityForResult(new Intent(getActivity(), AddTabactivity.class), 666);
     }
 
     class MyFragmentadapter extends FragmentStatePagerAdapter {
@@ -90,5 +102,11 @@ public class Fragment_home extends Fragment {
         public CharSequence getPageTitle(int position) {
             return titledatas.get(position);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        bind.unbind();
+        super.onDestroy();
     }
 }

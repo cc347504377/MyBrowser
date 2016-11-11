@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:layout_marginTop="10dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
-        <EditText
-            android:textSize="14sp"
-            android:hint="输入关键字或网址进行搜索"
-            android:maxLines="1"
-            android:drawableLeft="@drawable/find_selected"
-            android:drawableRight="@drawable/tool_share"
-            android:background="@drawable/fffffff"
-            android:id="@+id/edit_query"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fffffff"
+            android:orientation="horizontal"
+            android:paddingStart="3dp"
+            android:weightSum="9">
+
+                <EditText
+                    android:id="@+id/edit_query"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:background="@drawable/fffffff"
+                    android:drawableLeft="@drawable/find_selected"
+                    android:hint="输入关键字或网址进行搜索"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/QRcode"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/clickcolor"
+                    android:src="@drawable/notification_tool_deep_barcode" />
+        </LinearLayout>
+
+</RelativeLayout>

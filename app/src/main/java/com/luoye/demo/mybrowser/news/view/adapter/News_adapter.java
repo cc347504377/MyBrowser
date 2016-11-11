@@ -146,7 +146,7 @@ public class News_adapter extends BaseViewHolderAdapter {
         relayout.setTag(position);
         relayout.setOnClickListener(this);
         String imageurl = datas.get(position).getImageurls().get(0).getUrl();
-        imageView.setBackground(context.getResources().getDrawable(R.drawable.load_small));
+        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.load_small));
         volleyHttp.getheadimage(imageurl,imageView,context);
         textView.setText(datas.get(position).getTitle());
         return layout;

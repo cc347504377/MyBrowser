@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.Toast;
 
+import com.luoye.demo.mybrowser.Myapplication;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 
 /**
@@ -49,9 +50,6 @@ public class MyScrollview extends FrameLayout {
 
     public MyScrollview(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //注册广播
-        context.registerReceiver(new Canscroll(), new IntentFilter("can"));
-
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
@@ -60,13 +58,17 @@ public class MyScrollview extends FrameLayout {
         intent = new Intent(RECEIVERACTION);
         mScroller = new Scroller(getContext());
         mtoughstop = ViewConfiguration.get(context).getScaledTouchSlop();
+        //注册广播
+        Canscroll canscroll = new Canscroll();
+        Myapplication.canscroll = canscroll;//将广播对象赋给Application方便管理
+        context.registerReceiver(canscroll, new IntentFilter("can"));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (isfirst) {
-            getChildAt(1).getLayoutParams().height = heightPixels-getStatusBarHeight();
+            getChildAt(1).getLayoutParams().height = heightPixels-getStatusBarHeight()-getChildAt(2).getMeasuredHeight();
             contentheight = getChildAt(1).getLayoutParams().height;
             otherview = (LinearLayout) getChildAt(0);
 
@@ -136,8 +138,8 @@ public class MyScrollview extends FrameLayout {
                 offsety =  (int) (lasty - event.getY());
                 content.scrollTo(0, offsety + start);
                 otherview.scrollTo(0,offsety/(contentheight/otherviewheight));
-                Log.i("TAG", "start: " + start);
-                Log.i("TAG", "offsety:" + offsety);
+//                Log.i("TAG", "start: " + start);
+//                Log.i("TAG", "offsety:" + offsety);
                 if (offsety > otherviewheight) {
                     content.scrollTo(0, 0);
                 }
@@ -192,7 +194,7 @@ public class MyScrollview extends FrameLayout {
 
                 if (start == 0) {
                     otherview.scrollTo(0, (otherviewheight+mScroller.getCurrY())/ (contentheight / otherviewheight));
-                    Log.i("TAG", (otherviewheight+mScroller.getCurrY())/ (contentheight / otherviewheight)+"-------");
+//                    Log.i("TAG", (otherviewheight+mScroller.getCurrY())/ (contentheight / otherviewheight)+"-------");
                 }else
                 otherview.scrollTo(0, (mScroller.getCurrY() - start)/ (contentheight / otherviewheight));
                 invalidate();
@@ -200,7 +202,7 @@ public class MyScrollview extends FrameLayout {
         }
     }
 
-    class Canscroll extends BroadcastReceiver{
+    public class Canscroll extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {

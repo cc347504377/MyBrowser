@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar"
+        android:background="@color/homeblue"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="当前标签"/>
+
+    <com.luoye.demo.mybrowser.news.view.FlowLayout
+        android:id="@+id/flowlayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
+    </com.luoye.demo.mybrowser.news.view.FlowLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="添加兴趣标签"/>
+
+    <com.luoye.demo.mybrowser.news.view.FlowLayout
+        android:id="@+id/flowlayoutall"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </com.luoye.demo.mybrowser.news.view.FlowLayout>
+
+</LinearLayout>

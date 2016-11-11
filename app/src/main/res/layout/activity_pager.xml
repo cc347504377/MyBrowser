@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello World!"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/pointx"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/point"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize" />
+    <TextView
+        android:background="@drawable/point"
+        android:layout_alignBaseline="@+id/pointx"
+        android:layout_alignRight="@+id/pointx"
+        android:layout_marginRight="@dimen/pointmargin"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize" />
+    <TextView
+        android:background="@drawable/point"
+        android:layout_alignBaseline="@+id/pointx"
+        android:layout_alignLeft="@+id/pointx"
+        android:layout_marginLeft="@dimen/pointmargin"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize" />
+
+    <TextView
+        android:id="@+id/point"
+        android:background="@drawable/pointbule"
+        android:layout_alignBaseline="@+id/pointx"
+        android:layout_alignRight="@+id/pointx"
+        android:layout_marginRight="@dimen/pointmargin"
+        android:layout_width="@dimen/pointsize"
+        android:layout_height="@dimen/pointsize"
+        />
+    <Button
+        android:elevation="50dp"
+        android:visibility="invisible"
+        android:id="@+id/wel_button"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="@drawable/buttondrawable"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:text="点击进入"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
