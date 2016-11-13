@@ -7,7 +7,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.luoye.demo.mybrowser.Home.MainActivity;
 import com.luoye.demo.mybrowser.R;
+import com.luoye.demo.mybrowser.news.UtilClass.UtilSharep;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,7 @@ public class Welcomeactivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
+        final UtilSharep utilSharep = new UtilSharep(this);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadeout);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -32,7 +35,10 @@ public class Welcomeactivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                if (utilSharep.isfrst())
                 startActivity(new Intent(Welcomeactivity.this, Pageractivity.class));
+                else
+                    startActivity(new Intent(Welcomeactivity.this, MainActivity.class));
                 finish();
             }
 

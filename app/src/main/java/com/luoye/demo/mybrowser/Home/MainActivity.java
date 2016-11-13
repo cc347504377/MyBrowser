@@ -18,6 +18,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.luoye.demo.map.Getlocation;
 import com.luoye.demo.map.Utils;
+import com.luoye.demo.mybrowser.Home.Customerview.MybottomBar;
 import com.luoye.demo.mybrowser.Myapplication;
 import com.luoye.demo.mybrowser.R;
 import com.luoye.demo.mybrowser.netdemo.view.PictureActivity;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
     ImageView weatherImg;
     @BindView(R.id.edit_query)
     EditText editQuery;
+    @BindView(R.id.bottom_bar)
+    MybottomBar bottomBar;
     private int i = 0;
     private Intent intent;
     private Unbinder bind;
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
             case R.id.forward:
                 break;
             case R.id.more:
+                bottomBar.showmenu();
                 break;
             case R.id.home:
                 sendBroadcast(new Intent("can"));

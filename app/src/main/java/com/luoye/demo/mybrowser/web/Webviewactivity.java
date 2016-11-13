@@ -3,7 +3,6 @@ package com.luoye.demo.mybrowser.web;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,8 +17,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.luoye.demo.mybrowser.Home.MainActivity;
+import com.luoye.demo.mybrowser.Home.Customerview.MybottomBar;
 import com.luoye.demo.mybrowser.R;
 import com.luoye.demo.mybrowser.web.view.Mywebview;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -34,6 +34,8 @@ public class Webviewactivity extends AppCompatActivity {
     ProgressBar pb;
     @BindView(R.id.edit_query)
     EditText editQuery;
+    @BindView(R.id.bottom_bar)
+    MybottomBar bottomBar;
     private String Path;
     @BindView(R.id.webview)
     Mywebview webview;
@@ -148,15 +150,16 @@ public class Webviewactivity extends AppCompatActivity {
                 }
                 break;
             case R.id.more:
+                bottomBar.showmenu();
                 break;
             case R.id.home:
                 gotohome();
                 break;
             case R.id.multiwindow:
+                Toast.makeText(this, "还没有实现，敬请期待", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.QRcode:
-                startActivityForResult(new Intent(Webviewactivity.this, CaptureActivity.class)
-                        , 2);
+                startActivityForResult(new Intent(Webviewactivity.this, CaptureActivity.class), 2);
                 break;
         }
     }
@@ -208,7 +211,7 @@ public class Webviewactivity extends AppCompatActivity {
     }
 
     private void input(String url) {
-        if (url!=null&&!" ".equals(url.trim()) && url.length() != 0) {
+        if (url != null && !" ".equals(url.trim()) && url.length() != 0) {
             if (url.startsWith("http")) {
                 webview.loadUrl(url);
             } else if (url.startsWith("www") || url.endsWith("com") || url.endsWith("net") || url.endsWith("cn")) {
