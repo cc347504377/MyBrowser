@@ -10,17 +10,16 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
-import com.luoye.demo.map.Getlocation;
-import com.luoye.demo.map.Utils;
+import com.luoye.demo.mybrowser.Home.Customerview.MyScrollview;
 import com.luoye.demo.mybrowser.Home.Customerview.MybottomBar;
 import com.luoye.demo.mybrowser.Myapplication;
 import com.luoye.demo.mybrowser.R;
+import com.luoye.demo.mybrowser.bookmark.BookActivity;
 import com.luoye.demo.mybrowser.netdemo.view.PictureActivity;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 import com.luoye.demo.mybrowser.web.Webviewactivity;
@@ -50,8 +49,44 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
     ImageView weatherImg;
     @BindView(R.id.edit_query)
     EditText editQuery;
+    @BindView(R.id.QRcode)
+    ImageButton QRcode;
+    @BindView(R.id.baidu)
+    TextView baidu;
+    @BindView(R.id.taobao)
+    TextView taobao;
+    @BindView(R.id.zhongguanchun)
+    TextView zhongguanchun;
+    @BindView(R.id.meinv)
+    TextView meinv;
+    @BindView(R.id.xingzuo)
+    TextView xingzuo;
+    @BindView(R.id.bookmarks)
+    TextView bookmarks;
+    @BindView(R.id.download)
+    TextView download;
+    @BindView(R.id.collect)
+    TextView collect;
+    @BindView(R.id.refresh)
+    TextView refresh;
+    @BindView(R.id.menu)
+    TextView menu;
+    @BindView(R.id.exit)
+    TextView exit;
+    @BindView(R.id.back)
+    ImageButton back;
+    @BindView(R.id.forward)
+    ImageButton forward;
+    @BindView(R.id.more)
+    ImageButton more;
+    @BindView(R.id.home)
+    ImageButton home;
+    @BindView(R.id.multiwindow)
+    ImageButton multiwindow;
     @BindView(R.id.bottom_bar)
     MybottomBar bottomBar;
+    @BindView(R.id.activity_main)
+    MyScrollview activityMain;
     private int i = 0;
     private Intent intent;
     private Unbinder bind;
@@ -70,11 +105,13 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bind = ButterKnife.bind(this);
-        Message message = Message.obtain();
-        message.what = 1;
-        message.obj = "成都";
-        handler.sendMessage(message);
+        ButterKnife.bind(this);
+        initlocation();
+        initeditorlistener();
+
+    }
+
+    private void initeditorlistener() {
         editQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -88,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
                     intent.putExtra("url", s.toString());
                     editQuery.setText("");
                     startActivity(intent);
+                    // TODO: 2016/11/15 独立检索页面
                 }
 
             }
@@ -97,34 +135,43 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
 
             }
         });
-//        initlocation();
+    }
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        bind = ButterKnife.bind(this);
+        collect.setEnabled(false);
+        refresh.setEnabled(false);
     }
 
     private void initlocation() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Getlocation getlocation = new Getlocation(MainActivity.this);
-                getlocation.getlocation(new AMapLocationListener() {
-                    @Override
-                    public void onLocationChanged(AMapLocation aMapLocation) {
-                        if (null != aMapLocation) {
-                            String log = Utils.getLocationStr(aMapLocation);
-                            UtilLog.setlog(log);
-                            if (aMapLocation.getErrorCode() == 0) {
-                                String city = aMapLocation.getCity();
-                                //请求天气
-                                Message message = Message.obtain();
-                                message.what = 1;
-                                message.obj = city;
-                                handler.sendMessage(message);
-                            } else UtilLog.setlog("定位失败");
+        // TODO: 2016/11/3 初始化高德组件
+//                Getlocation getlocation = new Getlocation(MainActivity.this);
+//                getlocation.getlocation(new AMapLocationListener() {
+//                    @Override
+//                    public void onLocationChanged(AMapLocation aMapLocation) {
+//                        if (null != aMapLocation) {
+//                            String log = Utils.getLocationStr(aMapLocation);
+//                            UtilLog.setlog(log);
+//                            if (aMapLocation.getErrorCode() == 0) {
+//                                String city = aMapLocation.getCity();
+//                                //请求天气
+//                                Message message = Message.obtain();
+//                                message.what = 1;
+//                                message.obj = city;
+//                                handler.sendMessage(message);
+//                            } else UtilLog.setlog("定位失败");
+//
+//                        }
+//                    }
+//                });
+        Message message = Message.obtain();
+        message.what = 1;
+        message.obj = "成都";
+        handler.sendMessage(message);
 
-                        }
-                    }
-                });
-            }
-        }).start();
+
     }
 
     @Override
@@ -199,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
         }
     }
 
+    //监听扫描二维码
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -222,13 +270,13 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
         super.onDestroy();
     }
 
-    //接受天气成功
+    //接收提天气
     @Override
     public void onResponse(Call<WeatherInfo> call, Response<WeatherInfo> response) {
         if (response.body().getRetData() != null) {
             UtilLog.setlog(response.body().getRetData().toString());
             WeatherInfo.RetDataBean data = response.body().getRetData();
-            initweather(data);
+            initweather(data);//更新天气视图
         }
 
     }
@@ -281,4 +329,26 @@ public class MainActivity extends AppCompatActivity implements Callback<WeatherI
         Toast.makeText(this, "获取天气失败", Toast.LENGTH_SHORT).show();
     }
 
+    @OnClick({R.id.bookmarks, R.id.download, R.id.collect, R.id.refresh, R.id.menu, R.id.exit})
+    public void onClickmenu(View view) {
+        switch (view.getId()) {
+            case R.id.bookmarks:
+                startActivity(new Intent(MainActivity.this, BookActivity.class));
+                break;
+            case R.id.download:
+                // TODO: 2016/11/13 下载管理
+                break;
+            case R.id.collect:
+                // TODO: 2016/11/13 添加到收藏夹
+                break;
+            case R.id.refresh:
+                break;
+            case R.id.menu:
+                //// TODO: 2016/11/13 高级菜单
+                break;
+            case R.id.exit:
+                finish();
+                break;
+        }
+    }
 }

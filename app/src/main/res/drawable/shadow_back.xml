@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:Android="http://schemas.android.com/apk/res/android">
 
-    <item>
 
-        <shape >
-            <solid Android:color="#ad494949" />
+    <item Android:left="-1px"
+        Android:right="-1px"
+        Android:bottom="-1px">
+        <shape>
+            <stroke Android:color="#c69c9c9c"
+                Android:width="1px"/>
+            <solid Android:color="@color/white" />
         </shape>
     </item>
 
-            <item  Android:top="1px">
-                <shape Android:shape="rectangle">
-                    <solid Android:color="@color/tabback" />
-                    <padding
-                        Android:top="8dp" />
-                   </shape>
 
-                    </item>
-
-                    </layer-list>
+</layer-list>

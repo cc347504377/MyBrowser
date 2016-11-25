@@ -15,24 +15,21 @@
             android:name="com.amap.api.v2.apikey"
             android:value="66b5800ef75563077e4253df6f1d0f52" />
 
-        <activity android:name=".Home.MainActivity">
-
-        </activity>
+        <activity android:name=".Home.MainActivity"></activity>
         <activity android:name=".news.view.Newcontentactivity" />
         <activity android:name=".netdemo.view.PictureActivity" />
         <activity android:name=".netdemo.view.Picturepageractivity" />
         <activity android:name=".web.Webviewactivity" />
         <activity android:name=".news.view.AddTabactivity" />
-        <activity android:name=".welcome.Welcomeactivity" >
+        <activity android:name=".welcome.Welcomeactivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".welcome.Pageractivity">
-
-        </activity>
+        <activity android:name=".welcome.Pageractivity"></activity>
+        <activity android:name=".bookmark.BookActivity"></activity>
     </application>
 
 </manifest>

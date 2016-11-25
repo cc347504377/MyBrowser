@@ -6,6 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.luoye.demo.mybrowser.Home.Customerview.MyScrollview;
+import com.luoye.demo.mybrowser.bookmark.SqlModel;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilSharep;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -22,22 +23,28 @@ public class Myapplication extends Application {
     public static UtilSharep sp = null;
     public static Context context = null;
     public static MyScrollview.Canscroll canscroll;
-
+    public static SqlModel sqlmodel = null;
     @Override
     public void onCreate() {
         //初始化Log工具类
-        UtilLog.IsLog = true;
-        UtilLog.setlog("Myapplication oncreate "+"log"+UtilLog.IsLog);
-        //初始化GSON
-        gson = new Gson();
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        //初始化Shareprefence
-        sp = new UtilSharep(getApplicationContext());
-        context = getApplicationContext();
+        initUtils();
         //初始化Image-loader
         initimageloader();
-        //注册广播接受者
         super.onCreate();
+    }
+
+    private void initUtils() {
+        //log工具类
+        UtilLog.IsLog = true;
+        UtilLog.setlog("Myapplication oncreate "+"log"+UtilLog.IsLog);
+        //Gson
+        gson = new Gson();
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //Shareprefence工具类
+        sp = new UtilSharep(getApplicationContext());
+        context = getApplicationContext();
+        //数据库
+        sqlmodel = new SqlModel(getApplicationContext());
     }
 
     private void initimageloader() {

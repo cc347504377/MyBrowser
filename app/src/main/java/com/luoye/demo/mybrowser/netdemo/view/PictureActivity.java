@@ -41,17 +41,6 @@ public class PictureActivity extends AppCompatActivity implements Viewapi {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("Tag", "onresume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("Tag", "onpause");
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

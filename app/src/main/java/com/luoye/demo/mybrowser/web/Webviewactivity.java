@@ -1,7 +1,6 @@
 package com.luoye.demo.mybrowser.web;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -10,23 +9,26 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.DownloadListener;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.luoye.demo.mybrowser.Home.Customerview.MybottomBar;
+import com.luoye.demo.mybrowser.Myapplication;
 import com.luoye.demo.mybrowser.R;
+import com.luoye.demo.mybrowser.bookmark.BookActivity;
+import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
+import com.luoye.demo.mybrowser.web.module.WebManager;
 import com.luoye.demo.mybrowser.web.view.Mywebview;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class Webviewactivity extends AppCompatActivity {
 
@@ -34,20 +36,50 @@ public class Webviewactivity extends AppCompatActivity {
     ProgressBar pb;
     @BindView(R.id.edit_query)
     EditText editQuery;
+    @BindView(R.id.QRcode)
+    ImageButton QRcode;
+    @BindView(R.id.action_bar)
+    LinearLayout actionBar;
+    @BindView(R.id.bookmarks)
+    TextView bookmarks;
+    @BindView(R.id.download)
+    TextView download;
+    @BindView(R.id.collect)
+    TextView collect;
+    @BindView(R.id.refresh)
+    TextView refresh;
+    @BindView(R.id.menu)
+    TextView menu;
+    @BindView(R.id.exit)
+    TextView exit;
+    @BindView(R.id.back)
+    ImageButton back;
+    @BindView(R.id.forward)
+    ImageButton forward;
+    @BindView(R.id.more)
+    ImageButton more;
+    @BindView(R.id.home)
+    ImageButton home;
+    @BindView(R.id.multiwindow)
+    ImageButton multiwindow;
     @BindView(R.id.bottom_bar)
     MybottomBar bottomBar;
+    @BindView(R.id.activity_main)
+    RelativeLayout activityMain;
+    //// TODO: 2016/11/15 浏览历史的保存
     private String Path;
     @BindView(R.id.webview)
     Mywebview webview;
-    private boolean isover;
+    public boolean isover;
     private GestureDetector detector;//监听器
+    private Unbinder bind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         String url = getIntent().getStringExtra("url");
-        ButterKnife.bind(this);
+        bind = ButterKnife.bind(this);
         detector = new GestureDetector(this, new MyGestureListener());
         iniwebview();
         input(url);
@@ -70,84 +102,17 @@ public class Webviewactivity extends AppCompatActivity {
     }
 
     private void iniwebview() {
-        webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//               view.loadUrl(url);
-//               return true;
-                //消除重定向
-                return false;// doc上的注释为: True if the host application wants to handle the key event itself, otherwise return false(如果程序需要处理,那就返回true,如果不处理,那就返回false)
-                // 我们这个地方返回false, 并不处理它,把它交给webView自己处理.
-            }
-
-        });
-        webview.setDownloadListener(new DownloadListener() {
-
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,
-                                        long contentLength) {
-                // TODO Auto-generated method stub
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-
-            }
-        });
-        webview.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                // Activity和Webview根据加载程度决定进度条的进度大小
-                // 当加载到100%的时候 进度条自动消失
-                if (newProgress == 100) {
-                    pb.setVisibility(View.GONE);
-                } else {
-                    if (View.GONE == pb.getVisibility()) {
-                        pb.setVisibility(View.VISIBLE);
-                    }
-                    pb.setProgress(newProgress);
-                }
-                pb.setProgress(newProgress);
-                super.onProgressChanged(view, newProgress);
-            }
-
-        });
-
-        webview.setOnoverscolledListener(new Mywebview.OnoverscolledListener() {
-            @Override
-            public void onochanged(boolean isover) {
-                Webviewactivity.this.isover = isover;
-            }
-        });
-        // 设置WebView属性，能够执行Javascript脚本
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setSupportZoom(true);
-        webview.getSettings().setBuiltInZoomControls(true);
-        webview.getSettings().setUseWideViewPort(true); //自适应屏幕
-        //自适应屏幕
-//        webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-        webview.getSettings().setLoadWithOverviewMode(true);
-        webview.getSettings().setDisplayZoomControls(false); //隐藏webview缩放按钮
-        //缓存模式
-        webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-        webview.getSettings().setDomStorageEnabled(true);//支持DomStor缓存
-        webview.getSettings().setDatabaseEnabled(true);
-        webview.getSettings().setUseWideViewPort(true);//将图片调整到适合webview的大小
+        WebManager.getinstance().webviewconfig(webview, pb, this);
     }
 
     @OnClick({R.id.back, R.id.forward, R.id.more, R.id.home, R.id.multiwindow, R.id.QRcode})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
-                if (webview.canGoBack()) {
-                    webview.goBack(); // goBack()表示返回WebView的上一页面
-                } else {
-                    gotohome();
-                }
+                goback();
                 break;
             case R.id.forward:
-                if (webview.canGoForward()) {
-                    webview.goForward(); // goBack()表示返回WebView的上一页面
-                }
+                goforward();
                 break;
             case R.id.more:
                 bottomBar.showmenu();
@@ -156,6 +121,7 @@ public class Webviewactivity extends AppCompatActivity {
                 gotohome();
                 break;
             case R.id.multiwindow:
+                //多窗口
                 Toast.makeText(this, "还没有实现，敬请期待", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.QRcode:
@@ -169,47 +135,27 @@ public class Webviewactivity extends AppCompatActivity {
         finish();
     }
 
-    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                               float velocityY) {
-
-            if (e2.getX() - e1.getX() > 300 && Math.abs(velocityX) >
-                    200 && Math.abs(e2.getY() - e1.getY()) < 250 && isover) {
-                webview.goBack();
-
-            } else if (e1.getX() - e2.getX() > 300 && Math.abs(velocityX) >
-                    200 && Math.abs(e2.getY() - e1.getY()) < 250 && isover) {
-                webview.goForward();
-            }
-
-            return super.onFling(e1, e2, velocityX, velocityY);
+    @OnClick({R.id.bookmarks, R.id.download, R.id.collect, R.id.refresh, R.id.menu, R.id.exit})
+    public void onClickmewu(View view) {
+        switch (view.getId()) {
+            case R.id.bookmarks:
+                startActivity(new Intent(Webviewactivity.this, BookActivity.class));
+                break;
+            case R.id.download:
+                break;
+            case R.id.collect:
+                Myapplication.sqlmodel.insert(webview.getTitle(), webview.getUrl());
+                break;
+            case R.id.refresh:
+                break;
+            case R.id.menu:
+                break;
+            case R.id.exit:
+                break;
         }
-
     }
 
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        // TODO Auto-generated method stub
-        detector.onTouchEvent(ev);
-        return super.dispatchTouchEvent(ev);
-    }
-
-
-    //监听
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            if (webview.canGoBack()) {
-                webview.goBack(); // goBack()表示返回WebView的上一页面
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
+    //搜索判断
     private void input(String url) {
         if (url != null && !" ".equals(url.trim()) && url.length() != 0) {
             if (url.startsWith("http")) {
@@ -224,6 +170,61 @@ public class Webviewactivity extends AppCompatActivity {
         //function.inhistory(MainActivity.this, titile, lasturl);
     }
 
+    /*
+    *
+    手势监听配置
+    *
+     */
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+            if (e2.getX() - e1.getX() > 300 && Math.abs(velocityX) >
+                    200 && Math.abs(e2.getY() - e1.getY()) < 250 && isover) {
+                goback();
+            } else if (e1.getX() - e2.getX() > 300 && Math.abs(velocityX) >
+                    200 && Math.abs(e2.getY() - e1.getY()) < 250 && isover) {
+                goforward();
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+
+    }
+
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // TODO Auto-generated method stub
+        detector.onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void goback() {
+        if (webview.canGoBack()) {
+            webview.goBack(); // goBack()表示返回WebView的上一页面
+        } else {
+            gotohome();
+        }
+    }
+
+    private void goforward() {
+        if (webview.canGoForward()) {
+            webview.goForward(); // goBack()表示返回WebView的上一页面
+        } else {
+            Toast.makeText(this, "没有更多", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            goback();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //接收二维码返回值
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -234,5 +235,11 @@ public class Webviewactivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        bind.unbind();
+        super.onDestroy();
     }
 }

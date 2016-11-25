@@ -35,7 +35,6 @@ public class Pageractivity extends AppCompatActivity {
     @BindView(R.id.wel_button)
     Button welButton;
     private float px;
-    private int position = 1;
     private ImageView imageView;
     private List<View> datas;
     private Animation animation;
@@ -49,40 +48,16 @@ public class Pageractivity extends AppCompatActivity {
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        animation = AnimationUtils.loadAnimation(this, R.anim.show);
-        px = getResources().getDimension(R.dimen.pointmargin);
-        ButterKnife.bind(this);
-        datas = new ArrayList<>();
-        final Drawable drawable0 = getResources().getDrawable(R.mipmap.ic_launcher);
-        addview(getResources().getDrawable(R.drawable.lead_1));
-        addview(getResources().getDrawable(R.drawable.lead_2));
-        addview(getResources().getDrawable(R.drawable.lead_3));
+        initanimation();
+        initdata();
+        initviewpager();
+    }
+
+    private void initviewpager() {
         viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
-        viewpager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return datas.size();
-            }
-
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                return object == view;
-            }
-
-            @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
-                Log.i("haha", "destroy" + position);
-                container.removeView(datas.get(position));
-            }
-
-            @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                Log.i("haha", "instant" + position);
-                container.addView(datas.get(position));
-                return datas.get(position);
-            }
-        });
+        viewpager.setAdapter(new WelAdapter(datas));
         viewpager.setCurrentItem(0);
+        //指示器滑动动画
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -95,6 +70,7 @@ public class Pageractivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == datas.size()-1) {
+                    //跳转Button动画
                     welButton.setVisibility(View.VISIBLE);
                     welButton.startAnimation(animation);
                 }else {
@@ -108,6 +84,23 @@ public class Pageractivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void initdata() {
+        //ViewPager指示器间隔
+        px = getResources().getDimension(R.dimen.pointmargin);
+        //绑定Butterknife
+        ButterKnife.bind(this);
+        //初始化ViewPager数据
+        datas = new ArrayList<>();
+        addview(getResources().getDrawable(R.drawable.lead_1));
+        addview(getResources().getDrawable(R.drawable.lead_2));
+        addview(getResources().getDrawable(R.drawable.lead_3));
+    }
+
+
+    private void initanimation() {
+        animation = AnimationUtils.loadAnimation(this, R.anim.show);
     }
 
     private void addview(Drawable drawable) {
