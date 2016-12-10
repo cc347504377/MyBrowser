@@ -11,13 +11,16 @@ import static com.luoye.demo.mybrowser.Myapplication.context;
  */
 
 public class BookSql extends SQLiteOpenHelper {
+    public static final String BOOKNAME = "bookmark";
+    public static final String COLUMNNAME = "book";
     public BookSql(Context contexty) {
         super(context, "book.db", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists bookmark (id integer primary key autoincrement,book text)");
+        db.execSQL("create table if not exists "+BOOKNAME+"(id integer primary key autoincrement,"
+                +COLUMNNAME+" text)");
     }
 
     @Override

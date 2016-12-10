@@ -12,13 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <TextView
-            android:text="收藏夹"
-            style="@style/toolbartitle" />
     </android.support.v7.widget.Toolbar>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/bookview"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/book_tab"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabTextColor="@color/white"
+        app:tabIndicatorColor="@color/homeblue"
+        app:tabSelectedTextColor="@color/homeblue"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/book_viewpager"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>

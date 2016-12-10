@@ -1,4 +1,4 @@
-package com.luoye.demo.mybrowser.bookmark;
+package com.luoye.demo.mybrowser.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.luoye.demo.mybrowser.Myapplication;
+import com.luoye.demo.mybrowser.bookmark.BookSql;
+import com.luoye.demo.mybrowser.bookmark.Bookinfo;
+import com.luoye.demo.mybrowser.history.HisSql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +20,18 @@ import java.util.List;
 public class SqlModel {
     private BookSql bookSql;
     private Context context;
+    private HisSql hisSql;
     public SqlModel(Context context) {
         bookSql = new BookSql(context);
+        hisSql = new HisSql(context);
         this.context = context;
     }
 
-    public void insert(String name,String url) {
+    public void inserthis() {
+
+    }
+
+    public void insertbook(String name,String url) {
         List<Bookinfo> list = getbook();
         for (Bookinfo info : list) {
             if (info.getBookname().equals(name) && info.getBookurl().equals(url)) {
@@ -54,7 +63,7 @@ public class SqlModel {
         return datas;
     }
 
-    public void delete(Bookinfo bookinfo) {
+    public void deletebook (Bookinfo bookinfo) {
         SQLiteDatabase readableDatabase = bookSql.getReadableDatabase();
         String json = Myapplication.gson.toJson(bookinfo);
         Cursor cursor = readableDatabase.rawQuery("Delete from bookmark where book like ?", new String[]{json});

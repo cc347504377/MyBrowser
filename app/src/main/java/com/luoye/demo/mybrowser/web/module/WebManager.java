@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 import com.luoye.demo.mybrowser.web.Webviewactivity;
+import com.luoye.demo.mybrowser.web.base.WebBaseActivity;
 import com.luoye.demo.mybrowser.web.view.Mywebview;
 
 /**
@@ -26,7 +27,7 @@ public class WebManager {
             webManager = new WebManager();
         return webManager;
     }
-    public void webviewconfig(Mywebview webview, final ProgressBar pb, final Webviewactivity activity) {
+    public void webviewconfig(Mywebview webview, final ProgressBar pb, final WebBaseActivity activity) {
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

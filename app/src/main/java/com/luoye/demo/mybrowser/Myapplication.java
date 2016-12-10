@@ -6,7 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.luoye.demo.mybrowser.Home.Customerview.MyScrollview;
-import com.luoye.demo.mybrowser.bookmark.SqlModel;
+import com.luoye.demo.mybrowser.database.SqlModel;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilSharep;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

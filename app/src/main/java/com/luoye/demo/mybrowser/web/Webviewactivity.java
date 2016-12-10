@@ -2,6 +2,7 @@ package com.luoye.demo.mybrowser.web;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.luoye.demo.mybrowser.Myapplication;
 import com.luoye.demo.mybrowser.R;
 import com.luoye.demo.mybrowser.bookmark.BookActivity;
 import com.luoye.demo.mybrowser.news.UtilClass.UtilLog;
+import com.luoye.demo.mybrowser.web.base.WebBaseActivity;
 import com.luoye.demo.mybrowser.web.module.WebManager;
 import com.luoye.demo.mybrowser.web.view.Mywebview;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
@@ -30,79 +32,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class Webviewactivity extends AppCompatActivity {
+public class Webviewactivity extends WebBaseActivity {
 
-    @BindView(R.id.pb)
-    ProgressBar pb;
-    @BindView(R.id.edit_query)
-    EditText editQuery;
-    @BindView(R.id.QRcode)
-    ImageButton QRcode;
-    @BindView(R.id.action_bar)
-    LinearLayout actionBar;
-    @BindView(R.id.bookmarks)
-    TextView bookmarks;
-    @BindView(R.id.download)
-    TextView download;
-    @BindView(R.id.collect)
-    TextView collect;
-    @BindView(R.id.refresh)
-    TextView refresh;
-    @BindView(R.id.menu)
-    TextView menu;
-    @BindView(R.id.exit)
-    TextView exit;
-    @BindView(R.id.back)
-    ImageButton back;
-    @BindView(R.id.forward)
-    ImageButton forward;
-    @BindView(R.id.more)
-    ImageButton more;
-    @BindView(R.id.home)
-    ImageButton home;
-    @BindView(R.id.multiwindow)
-    ImageButton multiwindow;
-    @BindView(R.id.bottom_bar)
-    MybottomBar bottomBar;
-    @BindView(R.id.activity_main)
-    RelativeLayout activityMain;
-    //// TODO: 2016/11/15 浏览历史的保存
+    // TODO: 2016/11/15 浏览历史的保存
     private String Path;
     @BindView(R.id.webview)
     Mywebview webview;
-    public boolean isover;
     private GestureDetector detector;//监听器
-    private Unbinder bind;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
-        String url = getIntent().getStringExtra("url");
-        bind = ButterKnife.bind(this);
+    protected void afterCreate() {
+        //初始化手势监听器
         detector = new GestureDetector(this, new MyGestureListener());
+        //初始化webview
         iniwebview();
-        input(url);
-        editQuery.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                input(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    private void iniwebview() {
-        WebManager.getinstance().webviewconfig(webview, pb, this);
     }
 
     @OnClick({R.id.back, R.id.forward, R.id.more, R.id.home, R.id.multiwindow, R.id.QRcode})
@@ -130,10 +73,7 @@ public class Webviewactivity extends AppCompatActivity {
         }
     }
 
-    private void gotohome() {
-        sendBroadcast(new Intent("can"));
-        finish();
-    }
+
 
     @OnClick({R.id.bookmarks, R.id.download, R.id.collect, R.id.refresh, R.id.menu, R.id.exit})
     public void onClickmewu(View view) {
@@ -144,31 +84,21 @@ public class Webviewactivity extends AppCompatActivity {
             case R.id.download:
                 break;
             case R.id.collect:
-                Myapplication.sqlmodel.insert(webview.getTitle(), webview.getUrl());
+                Myapplication.sqlmodel.insertbook(webview.getTitle(), webview.getUrl());
                 break;
             case R.id.refresh:
+                webview.reload();
                 break;
             case R.id.menu:
                 break;
             case R.id.exit:
+                System.exit(0);
                 break;
         }
     }
 
-    //搜索判断
-    private void input(String url) {
-        if (url != null && !" ".equals(url.trim()) && url.length() != 0) {
-            if (url.startsWith("http")) {
-                webview.loadUrl(url);
-            } else if (url.startsWith("www") || url.endsWith("com") || url.endsWith("net") || url.endsWith("cn")) {
-                webview.loadUrl("http://" + url);
-            } else {
-                webview.loadUrl("https://m.baidu.com/ssid=f917434357303035346100/s?word=" + url + "&ts=7955729&t_kt=0&ie=utf-8&rsv_iqid=17625304894037028313&rsv_t=7c81vcmfIMzZSWpokwcO5HZg5Xz%252BnAnREtj4mObSjsDRyhxIhNJ8&sa=ib&rsv_pq=17625304894037028313&rsv_sug4=7250&inputT=2431&ss=100");
-            }
-        }
 
-        //function.inhistory(MainActivity.this, titile, lasturl);
-    }
+
 
     /*
     *
@@ -237,9 +167,4 @@ public class Webviewactivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        bind.unbind();
-        super.onDestroy();
-    }
 }

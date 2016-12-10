@@ -37,7 +37,6 @@ public class BookAdapter extends RecyclerView.Adapter {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.name.setText(datas.get(position).getBookname());
         viewHolder.url.setText(datas.get(position).getBookurl());
-        UtilLog.setlog(datas.get(position).getBookurl()+"bookurl______");
 
     }
 
